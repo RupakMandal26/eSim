@@ -112,8 +112,8 @@ function installKicad
     ubuntu_version=$(lsb_release -rs)
 
     # Define KiCad PPAs based on Ubuntu version
-    if [[ "$ubuntu_version" == "24.04" || "$ubuntu_version" == "25.04" ]]; then
-        echo "Ubuntu $ubuntu_version detected."
+    if [[ "$ubuntu_version" == "24.04" ]]; then
+        echo "Ubuntu 24.04 detected."
         kicadppa="kicad/kicad-8.0-releases"
 
         # Check if KiCad is installed using dpkg-query for the main package
@@ -142,16 +142,16 @@ function installKicad
     fi
 
     # Check if the PPA is already added
-    if ! grep -q "^deb .*${kicadppa}" /etc/apt/sources.list /etc/apt/sources.list.d/* 2>/dev/null; then
-        echo "Adding KiCad PPA to local apt repository: $kicadppa"
-        sudo add-apt-repository -y "ppa:$kicadppa"
-        sudo apt-get update
-    else
-        echo "KiCad PPA is already present in sources."
-    fi
+#     if ! grep -q "^deb .*${kicadppa}" /etc/apt/sources.list /etc/apt/sources.list.d/* 2>/dev/null; then
+#         echo "Adding KiCad PPA to local apt repository: $kicadppa"
+#         sudo add-apt-repository -y "ppa:$kicadppa"
+#         sudo apt-get update
+#     else
+#         echo "KiCad PPA is already present in sources."
+#     fi
 
     # Install KiCad packages
-    sudo apt-get install -y --no-install-recommends kicad=8.0.8+dfsg-1 kicad-footprints kicad-libraries kicad-symbols kicad-templates
+    sudo apt-get install -y --no-install-recommends kicad kicad-footprints kicad-libraries kicad-symbols kicad-templates
 
     echo "KiCad installation completed successfully!"
 }
@@ -231,15 +231,15 @@ function copyKicadLibrary
     #Extract custom KiCad Library
     tar -xJf library/kicadLibrary.tar.xz
 
-    if [ -d ~/.config/kicad/6.0 ];then
+    if [ -d ~/.config/kicad/8.0 ];then
         echo "kicad config folder already exists"
     else 
-        echo ".config/kicad/6.0 does not exist"
-        mkdir -p ~/.config/kicad/6.0
+        echo ".config/kicad/8.0 does not exist"
+        mkdir -p ~/.config/kicad/8.0
     fi
 
     # Copy symbol table for eSim custom symbols 
-    cp kicadLibrary/template/sym-lib-table ~/.config/kicad/6.0/
+    cp kicadLibrary/template/sym-lib-table ~/.config/kicad/8.0/
     echo "symbol table copied in the directory"
 
     # Copy KiCad symbols made for eSim
@@ -417,7 +417,7 @@ elif [ $option == "--uninstall" ];then
         sudo apt purge -y kicad kicad-footprints kicad-libraries kicad-symbols kicad-templates
         sudo rm -rf /usr/share/kicad
 	sudo rm /etc/apt/sources.list.d/kicad*
-        rm -rf $HOME/.config/kicad/6.0
+        rm -rf $HOME/.config/kicad/8.0
 
         echo "Removing Virtual env......................."
         sudo rm -r $config_dir/env

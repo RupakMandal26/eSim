@@ -1,0 +1,53 @@
+--- nghdl/install-nghdl-scripts/install-nghdl-24.04.sh	2025-06-23 15:14:52.000000000 +0530
++++ nghdl/install-nghdl-scripts/install-nghdl-25.04.sh	2026-11-23 00:47:07.000000000 +0530
+@@ -55,17 +55,17 @@
+     sudo apt remove -y llvm llvm-dev
+ 
+     echo "Installing LLVM........................................"
+-    sudo apt install -y llvm llvm-dev
++    sudo apt install -y llvm-18 llvm-18-dev
+ 
+     echo "Installing Clang.........................................."
+-    sudo apt install -y clang
++    sudo apt install -y clang-18
+ 
+     echo "Installing Zlib1g-dev....................................."
+     sudo apt install -y zlib1g-dev
+   
+     # Specific dependency for canberra-gtk modules
+     echo "Installing Gtk Canberra modules..........................."
+-    sudo apt install -y libcanberra-gtk-module libcanberra-gtk3-module
++    sudo apt install -y libcanberra-gtk3-module libcanberra-gtk3-module
+ 
+     # Specific dependency for nvidia graphic cards
+     echo "Installing graphics dependency for Ngspice source build"
+@@ -102,9 +102,9 @@
+     echo "Configuring $ghdl build as per requirements"
+     chmod +x configure
+     # Other configure flags can be found at - https://github.com/ghdl/ghdl/blob/master/configure
+-    ./configure --with-llvm-config=/usr/bin/llvm-config
++    ./configure --with-llvm-config=/usr/bin/llvm-config-18 CC=clang-18 CXX=clang++-18
+     echo "Building the install file for $ghdl LLVM"
+-    make -j$(nproc)
++    make -j2
+     sudo make install
+ 
+     # set +e 		# Temporary disable exit on error
+@@ -133,7 +133,7 @@
+     echo "Configuring $verilator build as per requirements"
+     chmod +x configure
+     ./configure
+-    make -j$(nproc)
++    make -j2
+     sudo make install
+     echo "Removing the unessential verilator files........"
+     rm -r docs
+@@ -178,7 +178,7 @@
+     # Adding patch to Ngspice base code
+     # cp $src_dir/src/outitf.c $HOME/$nghdl/src/frontend
+ 
+-    make -j$(nproc)
++    make -j2
+     make install
+ 
+     # Make it executable

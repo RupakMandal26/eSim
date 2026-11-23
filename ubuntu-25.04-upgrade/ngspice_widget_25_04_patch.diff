@@ -1,0 +1,11 @@
+--- /home/rupak/eSim-2.5/src/ngspiceSimulation/NgspiceWidget.py.bak	2026-11-23 21:37:04.120118964 +0530
++++ /home/rupak/eSim-2.5/src/ngspiceSimulation/NgspiceWidget.py	2026-11-23 21:40:41.169336779 +0530
+@@ -135,7 +135,7 @@
+             else:
+                 # For Linux: use .raw file in xterm and gaw
+                 raw_file = os.path.abspath(command.replace(".cir.out", ".raw"))
+-                commandi = f'cd "{projPath}"; ngspice -p "{raw_file}"'
++                commandi = f'cd "{projPath}"; ngspice -i'
+ 
+                 xtermArgs = ['-hold', '-e', commandi]
+                 self.xtermProcess = QtCore.QProcess(self)
